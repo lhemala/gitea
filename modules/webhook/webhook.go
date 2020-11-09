@@ -26,6 +26,8 @@ var hookQueue = sync.NewUniqueQueue(setting.Webhook.QueueLength)
 // getPayloadBranch returns branch for hook event, if applicable.
 func getPayloadBranch(p api.Payloader) string {
 	switch pp := p.(type) {
+	case *api.PullRequestPayload:
+		return pp.PullRequest.Head.Ref
 	case *api.CreatePayload:
 		if pp.RefType == "branch" {
 			return pp.Ref
